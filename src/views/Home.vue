@@ -11,11 +11,13 @@
           <p>目前總支出 <span>{{totalCal}}</span>元</p>
         </div>
         <div class="calendar">
-          <v-date-picker color="green" :model-config="modelConfig"  v-model="chooseDate" is-expanded></v-date-picker>
+          <!-- <v-date-picker color="green" :model-config="modelConfig"  v-model="chooseDate" is-expanded></v-date-picker> -->
+        
+        <v-calendar :attributes="attributes" @dayclick="dayClicked" is-expanded> </v-calendar>
         </div>
       </aside>
       <main>
-        <list-component :types="typeList" :dates="dateList" @editOpen="lightboxHandler(arguments)" @editCost="editUpdate($event)" @alertOpen="lightboxHandler(arguments)"></list-component>
+        <list-component :types="typeList" :dates="dateList" :colorList="colorList" @editOpen="lightboxHandler(arguments)" @editCost="editUpdate($event)" @alertOpen="lightboxHandler(arguments)"></list-component>
       </main>
     </div>
     <div class="lightbox-wrapper" v-if="lightboxToggle.outer">
@@ -48,11 +50,12 @@ export default {
   },
   data(){
     return{
-      chooseDate: new Date(),
-      modelConfig: {
-        type: 'string',
-        mask: 'YYYY-MM-DD', // Uses 'iso' if missing
-      },
+      today:{yy:'',mm:'',dd:''},
+      selectedDay: new Date(),
+      // modelConfig: {
+      //   type: 'string',
+      //   mask: 'YYYY-MM-DD', // Uses 'iso' if missing
+      // },
       typeList:[{
             id:'1',
             name:'電信',
@@ -79,83 +82,65 @@ export default {
             color:'bg-gray',
           }
         ],
-      // monthList:[
-      //   {
-      //       id:1,
-      //       date:'2021-10-10',
-      //       name:'手機費',
-      //       type:'1',
-      //       text:'',
-      //       cost:199,
-      //     },{
-      //       id:2,
-      //       date:'2021-10-14',
-      //       name:'午餐',
-      //       type:'2',
-      //       text:'魷魚羹麵',
-      //       cost:55,
-      //     },{
-      //       id:3,
-      //       date:'2021-10-14',
-      //       name:'火車',
-      //       type:'3',
-      //       text:'【自強號】中壢-嘉義',
-      //       cost:510,
-      //     },{
-      //       id:4,
-      //       date:'2021-10-21',
-      //       name:'晚餐',
-      //       type:'2',
-      //       text:'豬排套餐',
-      //       cost:150,
-      //     },{
-      //       id:5,
-      //       date:'2021-10-22',
-      //       name:'專輯',
-      //       type:'5',
-      //       text:'knights Album',
-      //       cost:1000,
-      //     }
-      // ],
       lightboxToggle:{outer:false,inner:''},
       editItem:{},
+      colorList:[
+        {name:'bg-black',color:'#2e4057'},
+        {name:'bg-blue',color:'#358ed6'},
+        {name:'bg-red',color:'#ef2d56'},
+        {name:'bg-yel',color:'#ffc15e'},
+        {name:'bg-grn',color:'#1EA896'},
+        {name:'bg-pink',color:'#ec8596'},
+        {name:'bg-gray',color:'#77a0a9'}],
     }
   },
   computed:{
     ...mapGetters(['getMonthList']),
+    attributes() {
+      return this.getMonthList.map(t => ({
+        key: `cost.${t.id}`,
+        dot: { style:{
+          backgroundColor: this.colorList[t.type].color,
+        }},
+        dates: t.date,
+        customData: t,
+      }));
+    },
     totalCal(){
-      let total = this.getMonthList.map(item=>parseInt(item.cost)).reduce((prev,curr)=>prev+curr)
+      let total = this.getMonthList.map(item=>{
+        let mm = item.date.split('-')[1];
+         return (mm==this.today.mm)? parseInt(item.cost):0;
+        }).reduce((prev,curr)=>prev+curr)
       return total
     },
     dateList(){
-      return this.getMonthList.filter(date=>date.date==this.chooseDate)
+      return this.getMonthList.filter(date=>date.date==this.selectedDay)
     },
   },
   methods: {
-      lightboxHandler(val){
-        if(val[0]=='open'){
-          this.lightboxToggle.outer = true;
-          this.lightboxToggle.inner = val[1];
-        }else{
-          this.lightboxToggle.outer = false;
-        }
-      },
-      editUpdate(id){
-        const idx = this.getMonthList.findIndex(date=>date.id==id);
-        this.editItem = this.getMonthList[idx];
-      },
-      // delSpending(id){
-      //   const idx = this.getMonthList.findIndex(date=>date.id==id);
-      //   this.getMonthList.splice(idx,1);
-      //   this.lightboxHandler(['close','alert']);
-      // }
+    dayClicked(day) {
+      this.selectedDay = day.id;
     },
-    created() {
-      let yy = new Date().getFullYear();
-      let mm = parseInt(new Date().getMonth())+1;
-      let dd = new Date().getDate();
-      this.chooseDate = `${yy}-${mm}-${dd}`;
+    lightboxHandler(val){
+      if(val[0]=='open'){
+        this.lightboxToggle.outer = true;
+        this.lightboxToggle.inner = val[1];
+      }else{
+        this.lightboxToggle.outer = false;
+      }
     },
+    editUpdate(id){
+      const idx = this.getMonthList.findIndex(date=>date.id==id);
+      this.editItem = this.getMonthList[idx];
+    },
+  },
+  created() {
+    this.today.yy = new Date().getFullYear();
+    this.today.mm = parseInt(new Date().getMonth())+1;
+    this.today.dd = new Date().getDate();
+    this.selectedDay = `${this.today.yy}-${this.today.mm}-${this.today.dd}`;
+  },
+  //要做一個月份切換 當月總計切換
 }
 </script>
 <style lang="scss">

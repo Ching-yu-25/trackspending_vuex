@@ -1,8 +1,8 @@
 <template>
   <div class="list-wrapper">
     <div class="type-row">
-      <a class="type-btn bg-black" @click="typeHandler(0)">全部</a>
-      <a v-for="type in typeList" :key="type.id" :class="['type-btn',type.color]"  @click="typeHandler(type.id)">{{type.name}}</a>
+      <a :class="['type-btn', 'bg-black',(typeChoose==0)?'active':'']" @click="typeHandler(0)">全部</a>
+      <a v-for="type in typeList" :key="type.id" :class="['type-btn',colorList[type.id].name,(typeChoose==type.id)?'active':'']"  @click="typeHandler(type.id)">{{type.name}}</a>
     </div>
     <hr>
     <div v-if="dayList.length>0&&typeDateList.length">
@@ -17,7 +17,7 @@
           </div>
           <div class="bottom-row text-start">
             <div>
-              <div class="name"><span :class="['type-tag',typeFilter(item.type,'color')]">{{typeFilter(item.type,'name')}}</span>{{item.name}}</div>
+              <div class="name"><span :class="['type-tag',colorList[parseInt(item.type)].name]">{{typeFilter(item.type)}}</span>{{item.name}}</div>
               <div class="text">{{item.text}}</div>
             </div>
             <div class="money">${{item.cost}}</div>
@@ -38,7 +38,8 @@
     name:'ListComponent',
     props:{
       types:{type:Array},
-      dates:{type:Array}
+      dates:{type:Array},
+      colorList:{type:Array}
     },
     data(){
       return{
@@ -57,13 +58,9 @@
       typeHandler(typeid){
         this.typeChoose=typeid;
       },
-      typeFilter(id,text){
+      typeFilter(id){
         let nowType = this.typeList.filter(type=>type.id==id)
-        if(text=="name"){
-          return nowType[0].name
-        }else{
-          return nowType[0].color
-        }
+        return nowType[0].name
       },
     },
     computed:{

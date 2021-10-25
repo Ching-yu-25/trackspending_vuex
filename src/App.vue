@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="fixed-btns">
-      <router-link class="staticBtn" to="/statics/" v-if="nowPage=='Home'"> <font-awesome-icon icon="chart-bar" /></router-link>
+      <router-link class="staticBtn" to="/Statistics/" v-if="nowPage=='Home'"> <font-awesome-icon icon="chart-bar" /></router-link>
       <router-link class="HomeBtn" to="/"  v-else> <font-awesome-icon icon="home" /></router-link>
     </div>
     <router-view/>
@@ -20,7 +20,7 @@ export default{
     if(this.$route.name=="Home"){
       this.nowPage='Home'
     }else{
-      this.nowPage='Statics'
+      this.nowPage='Statistics'
     }
   },
   watch:{
@@ -119,63 +119,112 @@ body {
 }
 .bg-black {
   background: $mblack;
-  transition: background-color .5s;
+  transition: all .5s;
+  border:1px solid transparent;
   &:hover{
-    transition: background-color .5s;
+    transition: all .5s;
     background: rgb(27, 27, 27);
+  }
+  &.active{
+    color: $mblack;
+    background-color:transparent;
+    border:1px solid $mblack;
+    transition: all .5s;
   }
 }
 .bg-blue {
   background: rgb(53, 142, 214);
-  transition: background-color .5s;
+  transition: all .5s;
+  border:1px solid transparent;
   &:hover{
-    transition: background-color .5s;
+    transition: all .5s;
     background: rgb(32, 99, 155);
+  }
+  &.active{
+    color: rgb(53, 142, 214);
+    background-color:transparent;
+    border:1px solid rgb(53, 142, 214);
+    transition: all .5s;
   }
 }
 
 .bg-red {
   background: $mred;
-  transition: background-color .5s;
+  transition: all .5s;
+  border:1px solid transparent;
   &:hover{
     background:#bb1b3e;
-    transition: background-color .5s;
+    transition: all .5s;
+  }
+  &.active{
+    color: $mred;
+    background-color:transparent;
+    border:1px solid $mred;
+    transition: all .5s;
   }
 }
 
 .bg-grn {
   background: $mgrn;
-  transition: background-color .5s;
+  transition: all .5s;
+  border:1px solid transparent;
   &:hover{
     background:#117e6f;
-    transition: background-color .5s;
+    transition: all .5s;
+  }
+  &.active{
+    color: $mgrn;
+    background-color:transparent;
+    border:1px solid $mgrn;
+    transition: all .5s;
   }
 }
 
 .bg-yel {
   background: $myel;
-  transition: background-color .5s;
+  transition: all .5s;
+  border:1px solid transparent;
   &:hover{
     background:#c7923d;
-    transition: background-color .5s;
+    transition: all .5s;
+  }
+  &.active{
+    color: $myel;
+    background-color:transparent;
+    border:1px solid $myel;
+    transition: all .5s;
   }
 }
 
 .bg-pink {
   background: rgb(236, 133, 150);
-  transition: background-color .5s;
+  transition: all .5s;
+  border:1px solid transparent;
   &:hover{
     background:rgb(190, 96, 112);
-    transition: background-color .5s;
+    transition: all .5s;
+  }
+  &.active{
+    color: rgb(236, 133, 150);
+    background-color:transparent;
+    border:1px solid rgb(236, 133, 150);
+    transition: all .5s;
   }
 }
 
 .bg-gray {
   background: $mgray;
-  transition: background-color .5s;
+  transition: all .5s;
+  border:1px solid transparent;
   &:hover{
     background:#517077;
-    transition: background-color .5s;
+    transition: all .5s;
+  }
+  &.active{
+    color: $mgray;
+    background-color:transparent;
+    border:1px solid $mgray;
+    transition: all .5s;
   }
 }
 

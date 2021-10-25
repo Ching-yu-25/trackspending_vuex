@@ -21,14 +21,14 @@ library.add(faPlus, faPencilAlt, faTrashAlt, faTimes, faChartBar, faHome)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 /*vue 日曆套件*/
-// import VCalendar from 'v-calendar';
-import VDatePicker from 'v-calendar';
-// Vue.use(VCalendar, {
-//   componentPrefix: 'vc',
-// });
-Vue.use(VDatePicker, {
+import VCalendar from 'v-calendar';
+// import VDatePicker from 'v-calendar';
+Vue.use(VCalendar, {
   componentPrefix: 'v',
 });
+// Vue.use(VDatePicker, {
+//   componentPrefix: 'v',
+// });
 
 Vue.config.productionTip = false
 
