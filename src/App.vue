@@ -362,4 +362,14 @@ input,textarea {
     }
   }
 }
+.alert-text{
+  color:$mred;
+}
+.required-item{
+  &::before{
+    content:'*';
+    color: $mred;
+    margin-left:-.5rem;
+  }
+}
 </style>

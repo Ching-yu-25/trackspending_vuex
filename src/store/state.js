@@ -41,5 +41,30 @@ export default {
     type: '5',
     text: 'knights Album',
     cost: 1000,
-  }]
+  }],
+  typeList: [{
+    id: '1',
+    name: '電信',
+    color: 'bg-blue',
+  }, {
+    id: '2',
+    name: '食物',
+    color: 'bg-red'
+  }, {
+    id: '3',
+    name: '交通',
+    color: 'bg-yel'
+  }, {
+    id: '4',
+    name: '日用品',
+    color: 'bg-grn',
+  }, {
+    id: '5',
+    name: '娛樂',
+    color: 'bg-pink'
+  }, {
+    id: '6',
+    name: '其他',
+    color: 'bg-gray',
+  }],
 }

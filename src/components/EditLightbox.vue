@@ -2,30 +2,32 @@
   <div class="lightbox" id="edit-listbox">
     <button class="btn-close" @click="$emit('editClose','close','edit')"><font-awesome-icon icon="times" /></button>
     <div class="lightbox-header">編輯紀錄</div>
-    <div class="row">
+    <div class="row required-item">
       <label for="">日期:</label>
       <date-picker v-model="updateItem.date" valueType="format"></date-picker>
     </div>
-    <div class="row">
+    <div class="row required-item">
       <div v-for="item in typeList" :key="`edittype${item.id}`">
-        <label :for="`type${item.id}`" :class="['type-btn', item.color]">
+        <label :for="`type${item.id}`" :class="['type-btn', item.color,(updateItem.type==item.id)?'active':'']">
           {{item.name}}
           <input type="radio" name="type" :id="`type${item.id}`" :value="item.id" v-model="updateItem.type" required>
         </label>
       </div>
-      
     </div>
-    <div class="row">
+    <div class="row required-item">
       <label for="">項目名稱:</label>
       <input type="text" v-model="updateItem.name" required>
     </div>
-    <div class="row">
+    <div class="row required-item">
       <label for="">金額:</label>
       <input type="number" v-model="updateItem.cost" required>
     </div>
     <div class="row">
       <label for="">備註:</label>
       <textarea v-model="updateItem.text"></textarea>
+    </div>
+    <div class="row">
+      <div class="alert-text">{{errMsg}}</div>
     </div>
     <div class="btn-row">
       <button class="btn bg-red" @click="editSpending()">更新</button>
@@ -47,12 +49,17 @@ export default{
       return{
         typeList:this.editTypes,
         updateItem:this.editItem,
+        errMsg:'',
       }
     },
     methods:{
       ...mapActions(['editCost']),
       editSpending(){
-        if(!this.updateItem.date||!this.updateItem.name||!this.updateItem.type||!this.updateItem.cost) return;
+        this.errMsg='';
+        if(!this.updateItem.date||!this.updateItem.name||!this.updateItem.type||!this.updateItem.cost) {
+          this.errMsg = '請確認必填欄位是否已填寫!';
+          return false;
+        }
         // this.$emit('updateCost',this.updateItem);
         this.editCost(this.updateItem);
         this.updateItem={

@@ -7,22 +7,22 @@
           <div class="user-name">Ching yu</div>
         </div>
         <div class="static">
-          <p class="month">10月份</p>
+          <p class="month">{{today.mm}}月份</p>
           <p>目前總支出 <span>{{totalCal}}</span>元</p>
         </div>
         <div class="calendar">
           <!-- <v-date-picker color="green" :model-config="modelConfig"  v-model="chooseDate" is-expanded></v-date-picker> -->
         
-        <v-calendar :attributes="attributes" @dayclick="dayClicked" is-expanded> </v-calendar>
+        <v-calendar :attributes="attributes" @dayclick="dayClicked" @update:from-page="monthChange()" is-expanded> </v-calendar>
         </div>
       </aside>
       <main>
-        <list-component :types="typeList" :dates="dateList" :colorList="colorList" @editOpen="lightboxHandler(arguments)" @editCost="editUpdate($event)" @alertOpen="lightboxHandler(arguments)"></list-component>
+        <list-component :types="getTypeList" :dates="dateList" :colorList="colorList" @editOpen="lightboxHandler(arguments)" @editCost="editUpdate($event)" @alertOpen="lightboxHandler(arguments)"></list-component>
       </main>
     </div>
     <div class="lightbox-wrapper" v-if="lightboxToggle.outer">
-      <add-lightbox :types="typeList" @addClose="lightboxHandler(arguments)" v-if="lightboxToggle.inner=='add'"></add-lightbox>
-      <edit-lightbox :edit-types="typeList" :edit-item="editItem" @editClose="lightboxHandler(arguments)" v-else-if="lightboxToggle.inner=='edit'"></edit-lightbox>
+      <add-lightbox :types="getTypeList" @addClose="lightboxHandler(arguments)" v-if="lightboxToggle.inner=='add'"></add-lightbox>
+      <edit-lightbox :edit-types="getTypeList" :edit-item="editItem" @editClose="lightboxHandler(arguments)" v-else-if="lightboxToggle.inner=='edit'"></edit-lightbox>
       <alert-lightbox v-else @alertClose="lightboxHandler(arguments)"></alert-lightbox>
     </div>
     <div class="addBtn bg-red" @click="lightboxHandler(['open','add'])"> <font-awesome-icon icon="plus" /></div>
@@ -52,36 +52,12 @@ export default {
     return{
       today:{yy:'',mm:'',dd:''},
       selectedDay: new Date(),
+      getMonthList:[],
       // modelConfig: {
       //   type: 'string',
       //   mask: 'YYYY-MM-DD', // Uses 'iso' if missing
       // },
-      typeList:[{
-            id:'1',
-            name:'電信',
-            color:'bg-blue',
-          },{
-            id:'2',
-            name:'食物',
-            color:'bg-red'
-          },{
-            id:'3',
-            name:'交通',
-            color:'bg-yel'
-          },{
-            id:'4',
-            name:'日用品',
-            color:'bg-grn',
-          },{
-            id:'5',
-            name:'娛樂',
-            color:'bg-pink'
-          },{
-            id:'6',
-            name:'其他',
-            color:'bg-gray',
-          }
-        ],
+      
       lightboxToggle:{outer:false,inner:''},
       editItem:{},
       colorList:[
@@ -92,10 +68,12 @@ export default {
         {name:'bg-grn',color:'#1EA896'},
         {name:'bg-pink',color:'#ec8596'},
         {name:'bg-gray',color:'#77a0a9'}],
+        testTxt:'2021-10'
     }
   },
   computed:{
-    ...mapGetters(['getMonthList']),
+    // ...mapGetters(['getMonthList']),
+    ...mapGetters(['getTypeList']),
     attributes() {
       return this.getMonthList.map(t => ({
         key: `cost.${t.id}`,
@@ -107,10 +85,7 @@ export default {
       }));
     },
     totalCal(){
-      let total = this.getMonthList.map(item=>{
-        let mm = item.date.split('-')[1];
-         return (mm==this.today.mm)? parseInt(item.cost):0;
-        }).reduce((prev,curr)=>prev+curr)
+      let total = this.getMonthList.map(item=> parseInt(item.cost)).reduce((prev,curr)=>prev+curr)
       return total
     },
     dateList(){
@@ -133,13 +108,22 @@ export default {
       const idx = this.getMonthList.findIndex(date=>date.id==id);
       this.editItem = this.getMonthList[idx];
     },
+    monthChange(){
+      console.log('222')
+    }
   },
   created() {
     this.today.yy = new Date().getFullYear();
     this.today.mm = parseInt(new Date().getMonth())+1;
     this.today.dd = new Date().getDate();
     this.selectedDay = `${this.today.yy}-${this.today.mm}-${this.today.dd}`;
+    this.getMonthList = this.$store.getters.getMonthList(`${this.today.yy}-${this.today.mm}`);
   },
+  watch:{
+    '$store.monthList'(newVal){
+      console.log(newVal)
+    }
+  }
   //要做一個月份切換 當月總計切換
 }
 </script>
