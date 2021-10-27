@@ -15,9 +15,10 @@ import {
   faTrashAlt,
   faTimes,
   faChartBar,
-  faHome
+  faHome,
+  faFileInvoiceDollar
 } from '@fortawesome/free-solid-svg-icons'
-library.add(faPlus, faPencilAlt, faTrashAlt, faTimes, faChartBar, faHome)
+library.add(faPlus, faPencilAlt, faTrashAlt, faTimes, faChartBar, faHome, faFileInvoiceDollar)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 /*vue 日曆套件*/

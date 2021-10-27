@@ -38,14 +38,14 @@ export default{
   data(){
     return{
       selectDay:{yy:'',mm:''},
-      getYearList:[],
+      // getYearList:[],
       datas: [0,0,0,0,0,0],
       monthCosts:[0,0,0,0,0,0,0,0,0,0,0,0],
       totalList:[],
     }
   },
   computed:{
-    // ...mapGetterYear']),
+    ...mapGetters(['getAllData']),
     ...mapGetters(['getTypeList']),
     itemsTotal(){
       let yearItems=[];
@@ -54,7 +54,7 @@ export default{
           yearItems[idx] = {typename:type.name,color:type.color,total:0}
       })
 
-      this.getYearList.forEach(item=>{
+      this.getAllData.forEach(item=>{
         const idx = parseInt(item.type)-1;
         yearItems[idx].total = yearItems[idx].total + parseInt(item.cost);
       })
@@ -67,8 +67,8 @@ export default{
   methods:{
     monthData(){//當月項目總計
       let itemDatas=[0,0,0,0,0,0];
-      if(this.getYearList.length!=0){
-        this.getYearList.filter(item=>item.date.split('-')[1]==this.selectDay.mm).forEach(date=>{
+      if(this.getAllData.length!=0){
+        this.getAllData.filter(item=>item.date.split('-')[1]==this.selectDay.mm).forEach(date=>{
           let idx = parseInt(date.type)-1;
           itemDatas[idx] = itemDatas[idx]+parseInt(date.cost)
         });
@@ -76,8 +76,8 @@ export default{
       this.datas=itemDatas
     },
     monthTotal(){//當年各月總計
-      if(this.getYearList.length!=0){
-        let yearList = this.getYearList.filter(date=>{
+      if(this.getAllData.length!=0){
+        let yearList = this.getAllData.filter(date=>{
           let yy=date.date.split('-')[0];
           return yy== this.selectDay.yy
         })
@@ -91,7 +91,7 @@ export default{
   created(){
     this.selectDay.yy = new Date().getFullYear();
     this.selectDay.mm = new Date().getMonth()+1;
-    this.getYearList = this.$store.getters.getYearList(`${this.selectDay.yy}`);
+    // this.getYearList = this.$store.getters.getYearList(`${this.selectDay.yy}`);
     this.monthData();
     this.monthTotal();
   },

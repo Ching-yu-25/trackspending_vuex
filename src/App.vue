@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <div class="fixed-btns">
-      <router-link class="staticBtn" to="/Statistics/" v-if="nowPage=='Home'"> <font-awesome-icon icon="chart-bar" /></router-link>
-      <router-link class="HomeBtn" to="/"  v-else> <font-awesome-icon icon="home" /></router-link>
+      <router-link class="staticBtn" to="/Statistics/" v-if="nowPage!='Statistics'"> <font-awesome-icon icon="chart-bar" /></router-link>
+      <router-link class="planBtn" to="/Plan/" v-if="nowPage!='Plan'"><font-awesome-icon icon="file-invoice-dollar" /></router-link>
+      <router-link class="HomeBtn" to="/"  v-if="nowPage!='Home'"> <font-awesome-icon icon="home" /></router-link>
     </div>
     <router-view/>
   </div>
@@ -17,11 +18,7 @@ export default{
     }
   },
   mounted() {
-    if(this.$route.name=="Home"){
-      this.nowPage='Home'
-    }else{
-      this.nowPage='Statistics'
-    }
+    this.nowPage = this.$route.name;
   },
   watch:{
     '$route.name'(newName){
@@ -343,6 +340,7 @@ input,textarea {
   position:fixed;
   bottom: 5%;
   right:5%;
+  max-width:50px;
   >a{
     display: inline-block;
     width:50px;

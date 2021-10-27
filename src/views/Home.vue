@@ -13,7 +13,7 @@
         <div class="calendar">
           <!-- <v-date-picker color="green" :model-config="modelConfig"  v-model="chooseDate" is-expanded></v-date-picker> -->
         
-        <v-calendar :attributes="attributes" @dayclick="dayClicked" @update:from-page="monthChange()" is-expanded> </v-calendar>
+        <v-calendar :attributes="attributes" @dayclick="dayClicked" @update:from-page="monthChange($event)" is-expanded> </v-calendar>
         </div>
       </aside>
       <main>
@@ -52,12 +52,11 @@ export default {
     return{
       today:{yy:'',mm:'',dd:''},
       selectedDay: new Date(),
-      getMonthList:[],
+      // getMonthList:[],
       // modelConfig: {
       //   type: 'string',
       //   mask: 'YYYY-MM-DD', // Uses 'iso' if missing
       // },
-      
       lightboxToggle:{outer:false,inner:''},
       editItem:{},
       colorList:[
@@ -72,10 +71,10 @@ export default {
     }
   },
   computed:{
-    // ...mapGetters(['getMonthList']),
+    ...mapGetters(['getAllData']),
     ...mapGetters(['getTypeList']),
     attributes() {
-      return this.getMonthList.map(t => ({
+      return this.getAllData.map(t => ({
         key: `cost.${t.id}`,
         dot: { style:{
           backgroundColor: this.colorList[t.type].color,
@@ -85,11 +84,18 @@ export default {
       }));
     },
     totalCal(){
-      let total = this.getMonthList.map(item=> parseInt(item.cost)).reduce((prev,curr)=>prev+curr)
+      let total =0;
+      if(this.getAllData.length>0){
+       total = this.getAllData.map(item=> {
+         let mm = item.date.split('-')[1];
+         console.log(mm,this.today.mm)
+         return (mm==this.today.mm)?parseInt(item.cost):0;
+        }).reduce((prev,curr)=>prev+curr)
+      }
       return total
     },
     dateList(){
-      return this.getMonthList.filter(date=>date.date==this.selectedDay)
+      return this.getAllData.filter(date=>date.date==this.selectedDay)
     },
   },
   methods: {
@@ -105,11 +111,12 @@ export default {
       }
     },
     editUpdate(id){
-      const idx = this.getMonthList.findIndex(date=>date.id==id);
-      this.editItem = this.getMonthList[idx];
+      const idx = this.getAllData.findIndex(date=>date.id==id);
+      this.editItem = this.getAllData[idx];
     },
-    monthChange(){
-      console.log('222')
+    monthChange(el){//待做
+      this.today.yy = el.year;
+      this.today.mm = el.month<10?'0'+el.month:el.month;
     }
   },
   created() {
@@ -117,20 +124,14 @@ export default {
     this.today.mm = parseInt(new Date().getMonth())+1;
     this.today.dd = new Date().getDate();
     this.selectedDay = `${this.today.yy}-${this.today.mm}-${this.today.dd}`;
-    this.getMonthList = this.$store.getters.getMonthList(`${this.today.yy}-${this.today.mm}`);
+    // this.getMonthList = this.$store.getters.getMonthList(`${this.today.yy}-${this.today.mm}`);
   },
-  watch:{
-    '$store.monthList'(newVal){
-      console.log(newVal)
-    }
-  }
-  //要做一個月份切換 當月總計切換
 }
 </script>
 <style lang="scss">
 .addBtn{
   position:fixed;
-  bottom: calc(5% + 1rem + 50px);
+  bottom: calc(5% + 1rem + 110px);
   right:5%;
   width:50px;
   height:50px;

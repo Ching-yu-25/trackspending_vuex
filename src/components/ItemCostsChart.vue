@@ -1,14 +1,10 @@
 <script>
 /*vue.chart js*/
 import {Pie} from 'vue-chartjs'
-import {mapGetters} from 'vuex'
 export default{
   name:'itemCostsChart',
   extends:Pie,
   props:['chartData'],
-  computed:{
-    ...mapGetters(['getMonthList']),
-  },
   methods:{
     updateData(){
       this.renderChart(

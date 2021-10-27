@@ -1,18 +1,13 @@
 <script>
 /*vue.chart js*/
 import {Bar} from 'vue-chartjs'
-// import {mapGetters} from 'vuex'
 export default{
   name:'MonthCostsChart',
   extends: Bar,
   props:['chartData'],
   data(){
     return{
-      getMonthList:[],
     }
-  },
-  computed:{
-    // ...mapGetters(['getMonthList']),
   },
   methods:{
     updateData(){
@@ -43,9 +38,6 @@ export default{
         }
       })
     }
-  },
-  created(){
-    this.getMonthList = this.$store.getters.getMonthList('2021-10')
   },
   mounted(){
     this.updateData();
