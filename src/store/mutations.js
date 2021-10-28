@@ -11,5 +11,11 @@ export default {
   removeCost: (state, id) => {
     const idx = state.monthList.findIndex(item => item.id == id)
     state.monthList.splice(idx, 1)
+  },
+
+  addItem: (state, item) => {
+    let id = state.plans.length + 1;
+    item.id = id;
+    state.plans.push(item)
   }
 }

@@ -1,4 +1,5 @@
 export default {
+  //支出紀錄列表
   monthList: [{
     id: 1,
     date: '2021-09-28',
@@ -42,6 +43,8 @@ export default {
     text: 'knights Album',
     cost: 1000,
   }],
+
+  //類別列表
   typeList: [{
     id: '1',
     name: '電信',
@@ -67,4 +70,7 @@ export default {
     name: '其他',
     color: 'bg-gray',
   }],
+
+  //預算計畫
+  plans: [],
 }

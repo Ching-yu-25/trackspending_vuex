@@ -11,5 +11,9 @@ export default {
   // },
   getYearList: (state) => (searchdate) => {
     return state.monthList.filter(item => item.date.includes(searchdate))
+  },
+
+  getAllPlans: (state) => {
+    return state.plans;
   }
 }

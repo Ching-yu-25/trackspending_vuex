@@ -14,5 +14,11 @@ export default {
     commit
   }, id) {
     commit('removeCost', id)
+  },
+
+  async addPlanItem({
+    commit
+  }, item) {
+    commit('addItem', item)
   }
 }

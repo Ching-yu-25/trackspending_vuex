@@ -3,21 +3,17 @@
     <h1>收入分配紀錄</h1>
     <div class="list-inner">
       <div class="list-scroll">
-        <div class="list-item">
-          <div class="date-income"><span class="date">2021/10</span><span class="income">月收入 $30000</span></div>
+        <div class="list-item" v-for="plan in getAllPlans" :key="`plan${plan.id}`">
+          <div class="date-income">
+            <span class="date">{{plan.date}}</span>
+            <span class="income">月收入 ${{plan.income}}</span>
+            </div>
           <div class="plan-type-list">
-            <div class="plan-type-item">
-              <span class="type-tag bg-blue">定存</span><span>10000</span>
+
+            <div class="plan-type-item" v-for="(item,index) in plan.list" :key="`item${plan.id}-${index}`">
+              <span class="type-tag bg-gray">定存</span><span>{{item[index]}}</span>
             </div>
-            <div class="plan-type-item">
-              <span class="type-tag bg-red">股票/基金</span><span>3000</span>
-            </div>
-            <div class="plan-type-item">
-              <span class="type-tag bg-yel">保險</span><span>3000</span>
-            </div>
-            <div class="plan-type-item">
-              <span class="type-tag bg-grn">學習費</span><span>3000</span>
-            </div>
+
             <div class="plan-type-item">
               <span class="type-tag bg-gray">剩下生活費</span><span>10000</span>
             </div>
@@ -29,8 +25,12 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default{
   name:"PlanList",
+  computed:{
+    ...mapGetters(['getAllPlans']),
+  }
 }
 </script>
 <style lang="scss">
