@@ -22,7 +22,7 @@
           </div>
           <div class="row">
             <label class="type-tag bg-gray">股票/基金</label>
-            <input type="text"  v-model.number="newPlan.list[1]" />
+            <input type="text" v-model.number="newPlan.list[1]" />
           </div>
           <div class="row">
             <label class="type-tag bg-gray">保險</label>
@@ -43,7 +43,7 @@
         </div>
       </aside>
       <main>
-        <plan-list></plan-list>
+        <plan-list @update:plans="updatePlans($event)" @del:plan="delPlans($event)"></plan-list>
       </main>
     </div>
   </div>
@@ -68,32 +68,51 @@ export default {
         date:'',
         income:0,
         list:[],
-      }
+      },
+      isUpdated:false,
     }
   },
   computed:{
     remain(){
       let totalCost = this.newPlan.list.reduce((prev,curr)=>{
         return prev+curr},0)
-      return this.newPlan.income - totalCost
+        let money = this.newPlan.income - totalCost;
+      return money;
     },
   },
   methods:{
-    ...mapActions(['addPlanItem']),
+    ...mapActions(['addPlanItem','editPlanItem','delPlanItem']),
     clearAll(){
       this.newPlan={
         id:'',
         date:'',
         income:0,
-        list:[],
+        list:[0,0,0,0],
       }
     },
     creatItem(){
-      this.addPlanItem(this.newPlan)
-      this.clearAll();
+      let idx = this.newPlan.list.findIndex(item=>this.newPlan.income<item)
+      if(idx<0&&this.remain>=0&&!this.isUpdated){//新增
+        this.addPlanItem(this.newPlan);
+        this.clearAll();
+      }
+      if(idx<0&&this.remain>=0&&this.isUpdated){//修改
+        this.editPlanItem(this.newPlan);
+        this.clearAll();
+        this.isUpdated = false;
+      }
     },
-    objWrapper(idx,name,val){
-      console.log(idx,name,val)
+    updatePlans(el){
+      this.newPlan={
+        id:el.id,
+        date:el.date,
+        income:el.income,
+        list:el.list,
+      }
+      this.isUpdated=true;
+    },
+    delPlans(idx){
+      this.delPlanItem(idx);
     }
   },
   watch:{

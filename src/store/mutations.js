@@ -17,5 +17,12 @@ export default {
     let id = state.plans.length + 1;
     item.id = id;
     state.plans.push(item)
-  }
+  },
+  editItem: (state, item) => {
+    let idx = state.plans.findIndex(plan => plan.id == item.id);
+    state.plans.splice(idx, 1, item);
+  },
+  delItem: (state, idx) => {
+    state.plans.splice(idx, 1);
+  },
 }

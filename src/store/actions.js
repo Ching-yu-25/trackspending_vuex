@@ -20,5 +20,17 @@ export default {
     commit
   }, item) {
     commit('addItem', item)
+  },
+
+  async editPlanItem({
+    commit
+  }, item) {
+    commit('editItem', item)
+  },
+
+  async delPlanItem({
+    commit
+  }, idx) {
+    commit('delItem', idx)
   }
 }
