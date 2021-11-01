@@ -122,7 +122,8 @@ export default {
   created() {
     this.today.yy = new Date().getFullYear();
     this.today.mm = parseInt(new Date().getMonth())+1;
-    this.today.dd = new Date().getDate();
+    this.today.mm=this.today.mm<10?'0'+this.today.mm:this.today.mm;
+    this.today.dd = (new Date().getDate()<10)?'0'+new Date().getDate():new Date().getDate();
     this.selectedDay = `${this.today.yy}-${this.today.mm}-${this.today.dd}`;
     // this.getMonthList = this.$store.getters.getMonthList(`${this.today.yy}-${this.today.mm}`);
   },

@@ -78,7 +78,7 @@ li {
 
 body {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, '微軟正黑體';
-  background: $mlgrn;
+  background: $mlgrn url('./assets/images/bg_line.png');
   color: $mblack;
   margin: 0;
   padding: 0;
@@ -341,6 +341,7 @@ input,textarea {
   bottom: 5%;
   right:5%;
   max-width:50px;
+  z-index:99;
   >a{
     display: inline-block;
     width:50px;

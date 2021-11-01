@@ -42,6 +42,20 @@ export default {
     type: '5',
     text: 'knights Album',
     cost: 1000,
+  }, {
+    id: 7,
+    date: '2021-11-01',
+    name: '手機費',
+    type: '1',
+    text: '',
+    cost: 218,
+  }, {
+    id: 8,
+    date: '2021-11-02',
+    name: 'live ticket',
+    type: '5',
+    text: 'nijirock',
+    cost: 1200,
   }],
 
   //類別列表
@@ -72,5 +86,15 @@ export default {
   }],
 
   //預算計畫
-  plans: [],
+  plans: [{
+    id: '1',
+    date: '2021-04',
+    income: '30000',
+    list: [10000, 0, 1000, 5000],
+  }, {
+    id: '2',
+    date: '2021-05',
+    income: '30000',
+    list: [10000, 0, 0, 5000],
+  }, ],
 }

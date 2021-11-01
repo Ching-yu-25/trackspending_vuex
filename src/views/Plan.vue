@@ -6,11 +6,11 @@
           <img src="@/assets/images/photo.png" alt="" class="img-fluid" />
           <div class="user-name">Ching yu</div>
         </div>
-        <div class="plan-edit-area">
-          <div class="plan-toggle btn"></div>
+        <div :class="['plan-edit-area',editAreaShow?'active':'']" >
+          <div class="plan-toggle bg-grn" @click="editAreaShow=!editAreaShow">預算紀錄 <font-awesome-icon icon="plus" /></div>
           <div class="row">
             <label class="type-tag bg-black">日期 </label>
-            <date-picker valueType="format" v-model="newPlan.date"></date-picker>
+            <date-picker type="month" value-type="format" format="YYYY-MM" v-model="newPlan.date" ></date-picker>
           </div>
           <div class="row">
             <label class="type-tag bg-black">收入</label>
@@ -70,6 +70,7 @@ export default {
         list:[],
       },
       isUpdated:false,
+      editAreaShow:true,
     }
   },
   computed:{
@@ -91,6 +92,7 @@ export default {
       }
     },
     creatItem(){
+      if(!this.newPlan.date||!this.newPlan.income) return;
       let idx = this.newPlan.list.findIndex(item=>this.newPlan.income<item)
       if(idx<0&&this.remain>=0&&!this.isUpdated){//新增
         this.addPlanItem(this.newPlan);
@@ -109,6 +111,7 @@ export default {
         income:el.income,
         list:el.list,
       }
+      this.editAreaShow = true;
       this.isUpdated=true;
     },
     delPlans(idx){
@@ -128,6 +131,9 @@ export default {
   border-radius: 0.5rem;
   padding: 0.5rem;
   margin-top: 1rem;
+  height:30px;
+  overflow: hidden;
+  transition: height .5s;
   > .row {
     margin-bottom: 0.5rem;
     .type-tag {
@@ -137,14 +143,25 @@ export default {
       width: calc(100% - 80px);
     }
   }
+  &.active{
+    transition: height .5s;
+    height:335px;
+  }
   .btn-row{
     margin-top:.5rem;
     .btn{
       width:50%;
     }
   }
-  .btn{
-
-  }
+}
+.plan-toggle{
+  color: white;
+  width: calc(100% + 1rem);
+  margin-left: -.5rem;
+  margin-top: -.5rem;
+  margin-bottom: 1rem;
+  height: 30px;
+  line-height: 30px;
+  border-radius: .5rem .5rem 0 0;
 }
 </style>

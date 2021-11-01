@@ -122,6 +122,9 @@ export default{
 }
 .half-box{
   width: 49%;
+  @media screen and (max-width:767px){
+    width:100%;
+  }
 }
 .full-box{
   width:99%;

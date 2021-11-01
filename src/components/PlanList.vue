@@ -45,7 +45,10 @@ export default{
   },
   methods:{
     remainCalc(idx){
-      let total = this.getAllPlans[idx].list.reduce((prev,curr)=> prev+curr);
+      let total = this.getAllPlans[idx].list.reduce((prev,curr)=> {
+        return prev+curr
+        },0);
+      console.log(total)
       return this.getAllPlans[idx].income - total
     },
     editItem(idx){
@@ -61,8 +64,19 @@ export default{
 <style lang="scss">
 .list-inner{
   margin-top: .5rem;
-  .list-scroll{
-    overflow-y: scroll;
+  overflow-y: scroll;
+  height: 84vh;
+  padding-right: .35rem;
+  &::-webkit-scrollbar{
+    width:5px;
+    margin-left:.5rem
+  }
+  &::-webkit-scrollbar-thumb{
+    background: $mgrn;
+    border-radius: .5rem;
+  } 
+  &::-webkit-scrollbar-track{
+    background: transparent;
   }
 }
 .date-income{
@@ -92,7 +106,8 @@ export default{
   display: flex;
   flex-wrap:wrap;
   justify-content: flex-start;
-  border-bottom: 1px dashed $mblack;
+  margin-bottom: 1.5rem;
+  // border-bottom: 1px dashed $mblack;
   .plan-type-item{
     border:1px solid $mlgray;
     padding:.25rem;
@@ -100,7 +115,8 @@ export default{
     width: calc(94% / 3);
     margin: .5rem 1%;
     text-align:left;
-    
+    margin-bottom: .5rem;
+
   }
 }
 </style>
